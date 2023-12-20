@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Header from './Header';
 import ContactForm from './ContactForm';
 import ContactCard from './ContactCard';
+import { v4 as uuidv4 } from 'uuid';
+
 
 function App() {
   const [contact, setContact] = useState(() => {
@@ -11,23 +13,24 @@ function App() {
 
 
   useEffect(() => {
-    console.log("Saving data to local storage:", contact);
     localStorage.setItem("contacts", JSON.stringify(contact));
   }, [contact]);
 
 
   function onAddClick(newContact) {
+    const contactWithUnique = { ...newContact, unique: uuidv4() }
     setContact(pre => {
-      return [...pre, newContact]
+      return [...pre, contactWithUnique]
     })
   }
 
   function onDeleteButtonClick(unique) {
-    const updatedContact = contact.filter((contact, index) => {
-      return index !== unique;
+    setContact(prevContacts => {
+      const updatedContacts = prevContacts.filter(contact => contact.unique !== unique);
+      return updatedContacts;
     });
-    setContact(updatedContact);
   }
+
 
   return (
     <>
@@ -40,12 +43,4 @@ function App() {
   )
 }
 
-
-const data = [
-  { name: "Mohan", email: "mohan@gmail.com" },
-  { name: "Sohan", email: "sohan@gmail.com" },
-  { name: "Rohan", email: "rohan@gmail.com" },
-  { name: "Vinodh", email: "vinodh@gmail.com" },
-]
-const modifiedData = [...data]
 export default App

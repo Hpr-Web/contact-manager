@@ -2,6 +2,7 @@ import React from "react";
 import List from "@mui/material/List";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 import {
     Avatar,
     Box,
@@ -46,13 +47,12 @@ function SingleCard({ name, email, onDeleteButtonClick, unique }) {
 }
 
 function ContactCard({ data, onDeleteButtonClick }) {
-    const contact = data.map((value, index) => {
-        const { name, email } = value;
+    const contact = data.map(({ name, email, unique }) => {
         return (
             <SingleCard
                 onDeleteButtonClick={onDeleteButtonClick}
-                unique={index}
-                key={index}
+                unique={unique}
+                key={unique}
                 name={name}
                 email={email}
             />
